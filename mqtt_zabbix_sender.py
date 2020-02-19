@@ -51,10 +51,12 @@ class MQTTZabbixSender:
         self._client.on_connect = self.on_connect
         self._client.on_message = self.on_message
         self._client.connect(self._cfg["host"], self._cfg["port"], 60)
+        logging.debug(f"Connected to broker {self._cfg['host']}")
 
     def on_connect(self, client: mqtt.Client, userdata, flags, rc):
         for topic in self._cfg["topics"].keys():
             client.subscribe(topic, 1)
+            logging.debug(f"Subscribed to {topic}")
 
     def on_message(self, client: mqtt.Client, userdata, msg: mqtt.MQTTMessage):
         if msg.topic not in self._cfg["topics"]:
