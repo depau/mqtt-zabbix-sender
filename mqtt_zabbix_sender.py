@@ -24,7 +24,7 @@ def read_config(path: str) -> dict:
 
 # noinspection PyProtectedMember
 def apply_jq(payload: str, jq: dict):
-    if jq["ret"] not in ("first", "all"):
+    if jq["return"] not in ("first", "all"):
         raise ValueError("jq return value must be either 'first' or 'all'")
 
     # Dump JSON
@@ -34,7 +34,7 @@ def apply_jq(payload: str, jq: dict):
         data = payload
 
     # Retrieve function (first/all)
-    function = getattr(jq["query"], jq["ret"])
+    function = getattr(jq["query"], jq["return"])
 
     # Apply to input
     result = function(j)
