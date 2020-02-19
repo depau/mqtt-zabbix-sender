@@ -53,6 +53,9 @@ class MQTTZabbixSender:
         self._client.connect(self._cfg["host"], self._cfg["port"], 60)
         logging.debug(f"Connected to broker {self._cfg['host']}")
 
+    def loop_forever(self):
+        self._client.loop_forever()
+
     def on_connect(self, client: mqtt.Client, userdata, flags, rc):
         for topic in self._cfg["topics"].keys():
             client.subscribe(topic, 1)
@@ -92,6 +95,7 @@ def main(args=tuple(sys.argv)):
 
     sender = MQTTZabbixSender(cfg)
     sender.connect()
+    sender.loop_forever()
 
 
 if __name__ == "__main__":
