@@ -76,7 +76,7 @@ class MQTTZabbixSender:
 
         metrics = []
         for item in items:
-            payload = msg.payload
+            payload = msg.payload.decode()
 
             if "jq" in item:
                 try:
