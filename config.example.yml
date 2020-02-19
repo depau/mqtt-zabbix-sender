@@ -3,6 +3,7 @@
 # MQTT broker connection settings
 host: "host"
 port: 1883
+client_id: "mqtt-zabbix-sender" # Optional
 
 topics:
   # Topics to subscribe

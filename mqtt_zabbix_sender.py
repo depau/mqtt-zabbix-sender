@@ -47,7 +47,7 @@ class MQTTZabbixSender:
         self._client = None
 
     def connect(self):
-        self._client = mqtt.Client()
+        self._client = mqtt.Client(client_id=self._cfg.get("client_id", ""))
         self._client.on_connect = self.on_connect
         self._client.on_message = self.on_message
         self._client.connect(self._cfg["host"], self._cfg["port"], 60)
