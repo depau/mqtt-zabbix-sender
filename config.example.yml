@@ -1,0 +1,25 @@
+---
+
+# MQTT broker connection settings
+host: "host"
+port: 1883
+
+topics:
+  # Topics to subscribe
+  'zigbee2mqtt/bridge/state':
+    # For each topic, define one or more metrics that will be sent
+    - host: rock64
+      item: zigbee2mqtt.bridge.state
+
+  'zigbee2mqtt/tradfri_remote':
+    - host: rock64
+      item: zigbee2mqtt.tradfri_remote.battery
+      # You can apply JQ queries to JSON payloads, extract data and send it as multiple metrics
+      jq:
+        query: '.battery'
+        return: first
+    - host: rock64
+      item: zigbee2mqtt.tradfri_remote.linkquality
+      jq:
+        query: '.linkquality'
+        return: first
