@@ -11,7 +11,7 @@ from pyzabbix import ZabbixMetric, ZabbixSender
 # noinspection PyShadowingNames
 def read_config(path: str) -> dict:
     with open(path) as f:
-        cfg = yaml.load(f)
+        cfg = yaml.load(f, Loader=yaml.SafeLoader)
 
     # Pre-compile all JQ queries
     for topic, items in cfg["topics"].items():
