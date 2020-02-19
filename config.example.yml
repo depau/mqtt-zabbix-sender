@@ -5,6 +5,9 @@ host: "host"
 port: 1883
 client_id: "mqtt-zabbix-sender" # Optional
 
+# DEBUG, INFO, WARNING, ERROR, CRITICAL
+log_level: INFO
+
 topics:
   # Topics to subscribe
   'zigbee2mqtt/bridge/state':

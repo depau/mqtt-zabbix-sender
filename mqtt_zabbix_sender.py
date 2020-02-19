@@ -85,6 +85,9 @@ def main(args=tuple(sys.argv)):
     cfg_path = args[1]
     cfg = read_config(cfg_path)
 
+    log_level = getattr(logging, cfg.get("log_level", "INFO").upper(), logging.INFO)
+    logging.basicConfig(level=log_level)
+
     sender = MQTTZabbixSender(cfg)
     sender.connect()
 
