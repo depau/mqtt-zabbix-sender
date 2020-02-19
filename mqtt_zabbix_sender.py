@@ -17,7 +17,7 @@ def read_config(path: str) -> dict:
     for topic, items in cfg["topics"].items():
         for item in items:
             if "jq" in item:
-                item["query"] = pyjq.compile(item["query"])
+                item["jq"]["query"] = pyjq.compile(item["jq"]["query"])
 
     return cfg
 
@@ -68,7 +68,7 @@ class MQTTZabbixSender:
             payload = msg.payload
 
             if "jq" in item:
-                payload = apply_jq(payload, item["return"], item["query"])
+                payload = apply_jq(payload, item["jq"]["return"], item["jq"]["query"])
 
             metrics.append(ZabbixMetric(item["host"], item["item"], payload))
 
