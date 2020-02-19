@@ -37,7 +37,7 @@ def apply_jq(payload: str, jq: dict):
     function = getattr(jq["query"], jq["return"])
 
     # Apply to input
-    result = function(j)
+    result = function(data)
 
     # Convert result back to JSON
     if jq.get("marshal", True):
@@ -79,14 +79,21 @@ class MQTTZabbixSender:
             payload = msg.payload
 
             if "jq" in item:
-                payload = apply_jq(payload, item["jq"])
+                try:
+                    payload = apply_jq(payload, item["jq"])
+                except Exception as e:
+                    logging.error("Failed to apply JQ to payload, skipping", e)
+                    continue
 
             metrics.append(ZabbixMetric(item["host"], item["item"], payload))
 
             logging.debug(f"{msg.topic} -> {item['item']}@{item['host']}{{{payload}}}")
 
-        # noinspection PyTypeChecker
-        result = ZabbixSender(use_config=True).send(metrics)
+        try:
+            # noinspection PyTypeChecker
+            result = ZabbixSender(use_config=True).send(metrics)
+        except Exception as e:
+            logging.error("Failed to send metrics to Zabbix agent", e)
 
 
 def main(args=tuple(sys.argv)):
