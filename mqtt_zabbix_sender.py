@@ -79,7 +79,7 @@ class MQTTZabbixSender:
             payload = msg.payload
 
             if "jq" in item:
-                payload = apply_jq(payload, item["jq"]["return"], item["jq"]["query"])
+                payload = apply_jq(payload, item["jq"])
 
             metrics.append(ZabbixMetric(item["host"], item["item"], payload))
 
