@@ -23,21 +23,27 @@ def read_config(path: str) -> dict:
 
 
 # noinspection PyProtectedMember
-def apply_jq(payload: str, ret: str, query: pyjq._pyjq.Script):
-    if ret not in ("first", "all"):
+def apply_jq(payload: str, jq: dict):
+    if jq["ret"] not in ("first", "all"):
         raise ValueError("jq return value must be either 'first' or 'all'")
 
     # Dump JSON
-    j = json.loads(payload)
+    if jq.get("unmarshal", True):
+        data = json.loads(payload)
+    else:
+        data = payload
 
     # Retrieve function (first/all)
-    function = getattr(query, ret)
+    function = getattr(jq["query"], jq["ret"])
 
     # Apply to input
     result = function(j)
 
     # Convert result back to JSON
-    return json.dumps(result)
+    if jq.get("marshal", True):
+        return json.dumps(result)
+    else:
+        return result
 
 
 # noinspection PyShadowingNames
