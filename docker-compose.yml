@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  mqtt-zabbix-sender:
+    build: .
+    volumes:
+      - /etc/zabbix:/etc/zabbix:ro
+      - ./conf:/conf:ro
+    # Host networking is needed if the agent is running on the same machine
+    # and it's not in another Docker container. Use a Docker network if this
+    # is the case.
+    network_mode: host
